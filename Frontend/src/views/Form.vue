@@ -18,24 +18,6 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label>ID Articulo</label>
-                     <input type="text" class="form-control" v-model="entity.id">
-                </div>
-                <!-- /.form-group -->
-                <div class="form-group">
-                  <label>Cantidad</label>
-                   <input type="text" class="form-control" v-model="entity.cantidad"> 
-                </div>
-                <!-- /.form-group -->
-              </div>
-              <!-- /.col -->
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label>Nombre Articulo</label>
-                   <input type="text" class="form-control" v-model="entity.nombre"> 
-                </div>
-                <!-- /.form-group -->
-                <div class="form-group">
                   <label>Estados</label>
                   <div class="form-group clearfix">
                       <div class="icheck-success d-inline">
@@ -52,7 +34,23 @@
                       </div>                                 
                     </div>
                 </div>
+              </div>
+              <div class="col-md-6">   
                 <!-- /.form-group -->
+                <div class="form-group">
+                  <label>Cantidad</label>
+                   <input type="text" class="form-control" v-model="entity.cantidad"> 
+                </div>
+                <!-- /.form-group -->
+              </div>
+              <!-- /.col -->
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Nombre Articulo</label>
+                   <input type="text" class="form-control" v-model="entity.nombre"> 
+                </div>
+                <!-- /.form-group -->
+                
               </div>
               <!-- /.col -->
             </div>
@@ -98,9 +96,18 @@ data() {
         "fecha_creacion": new Date(),
         "estado": entity.estado == 'on' ? 'Nuevo':'Usado'
       },{ headers }).then((result) => {
-         console.log(result);
-         this.$toast.open('You did it!');
+         entity.nombre="";
+         entity.cantidad="";
+         entity.estado="";
 
+         
+         this.$toast.open({
+           message:'Articulo guargado exitosamente',
+           type: 'success',
+           position: 'top-right',
+           duration: '3000' 
+         });
+          console.log(result);
        
     }).catch(e => {
             console.log(e);

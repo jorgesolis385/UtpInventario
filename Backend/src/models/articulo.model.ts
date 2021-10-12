@@ -5,8 +5,10 @@ export class Articulo extends Entity {
   @property({
     type: 'string',
     id:true,
+    generated:true,
   })
   id?:string;
+  
   @property({
     type: 'string',
   })

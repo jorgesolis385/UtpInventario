@@ -1,16 +1,16 @@
 import {inject} from '@loopback/core';
 import {DefaultCrudRepository} from '@loopback/repository';
 import {MongoAtlasDataSource} from '../datasources';
-import {Articulo, ArticuloRelations} from '../models';
+import {Evento, EventoRelations} from '../models';
 
-export class ArticuloRepository extends DefaultCrudRepository<
-  Articulo,
-  typeof Articulo.prototype.id,
-  ArticuloRelations
+export class EventoRepository extends DefaultCrudRepository<
+  Evento,
+  typeof Evento.prototype.id,
+  EventoRelations
 > {
   constructor(
     @inject('datasources.mongoAtlas') dataSource: MongoAtlasDataSource,
   ) {
-    super(Articulo, dataSource);
+    super(Evento, dataSource);
   }
 }

@@ -1,64 +1,56 @@
 <template>
-    <div class="card card-default">
-          <div class="card-header">
-            <h3 class="card-title">Alquiler Articulo</h3>
-
-            <div class="card-tools">
-              <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                <i class="fas fa-minus"></i>
-              </button>
-              <button type="button" class="btn btn-tool" data-card-widget="remove">
-                <i class="fas fa-times"></i>
-              </button>
+  <div class="card card-default">
+    <div class="card-header">
+      <h3 class="card-title">Alquiler Articulo</h3>
+        <div class="card-tools">
+          <button type="button" class="btn btn-tool" data-card-widget="collapse">
+            <i class="fas fa-minus"></i>
+          </button>
+          <button type="button" class="btn btn-tool" data-card-widget="remove">
+            <i class="fas fa-times"></i>
+          </button>
             </div>
           </div>
           <!-- /.card-header -->
           <div class="card-body">
             <div class="row">
+                <div class="callout callout-info col-md-12">
+                    <h5><i class="fas fa-info"></i> Note:</h5>
+                    Alquiler para  articulo : {{articulo.nombre}} actualmente existen :  {{articulo.cantidad}} unidades
+                </div>
+            </div>
+            <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label>ID Articulo</label>
-                     <input type="text" class="form-control">
+                  <label>Tipo Evento</label>                   
+                  <select class="form-control select2bs4 select2-hidden-accessible" style="width: 100%;" data-select2-id="17" tabindex="-1" aria-hidden="true" v-model="entity.tipo">
+                    <option selected="selected" data-select2-id="ALQUILER">ALQUILER</option>
+                    <option data-select2-id="ENTREGA">ENTREGA</option>
+                  </select>
                 </div>
                 <!-- /.form-group -->
                 <div class="form-group">
-                  <label>Cantidad</label>
-                   <input type="text" class="form-control">
+                  <label>Quien Alquila</label>
+                   <input type="text" class="form-control" v-model="entity.quienal">
                 </div>
                 <!-- /.form-group -->
               </div>
               <!-- /.col -->
               <div class="col-md-6">
                 <div class="form-group">
-                  <label>Nombre Articulo</label>
-                   <input type="text" class="form-control">
-                </div>
-                <!-- /.form-group -->
+                   <label>Cantidad</label>
+                   <input type="text" class="form-control" v-model="entity.cantidad">
+                </div>             
                 <div class="form-group">
-                  <label>Estados</label>
-                  <div class="form-group clearfix">
-                      <div class="icheck-success d-inline">
-                        <input type="radio" name="estado" checked="" id="radioSuccess1">
-                        <label for="radioSuccess1">
-                            Nuevo
-                        </label>
-                      </div>
-                      <div class="icheck-danger d-inline">
-                        <input type="radio" name="estado" checked="" id="radioDanger1">
-                        <label for="radioDanger1">
-                             Usado
-                        </label>
-                      </div>                                 
-                    </div>
+                   <label>Quien entrega</label>
+                   <input type="text" class="form-control" v-model="entity.quienen">
                 </div>
-                <!-- /.form-group -->
-              </div>
-              <!-- /.col -->
+              </div>       
             </div>
             <!-- /.row -->
              <div class="row">
                 <div class="col-md-6">
-                    <button type="button" class="btn btn-block btn-primary">Crear Articulo</button>
+                    <button type="button" v-on:click="persistir(entity,articulo.id)" class="btn btn-block btn-primary">Crear Articulo</button>
                 </div>
                 <div class="col-md-6">
                     <button type="button" class="btn btn-block btn-default">Limpiar</button>
@@ -69,11 +61,54 @@
           <div class="card-footer">
            
           </div>
-        </div>
+  </div>
 </template>
 
 <script>
+import axios from "axios";
 export default {
+data() {
+    return {
+       entity:{},
+       articulo: this.$route.params
+    }
+  },
+  created() {
+    console.log( this.articulo);
+    // articulo = this.$route.params.item;
+  },
+  methods: {
+    persistir: function (entity,id) {   
+      const headers = { 
+        "Authorization": "Bearer my-token",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials": true,
+         "Content-Type": "application/json"
+      }; 
+      console.log(entity.id);
+      axios.post("http://localhost:3000/eventos",{
+        "articulo_id":id,
+        "cantidad":Number(entity.cantidad),
+        "fecha_inicio": new Date(),
+        "quien_alquila":entity.quienal,
+        "quien_entrega":entity.quienen,
+        "tipo": entity.tipo
+      },{ headers }).then((result) => {
+                 
+         this.$toast.open({
+           message:'Alquiler guargado exitosamente',
+           type: 'success',
+           position: 'top-right',
+           duration: '3000' 
+         });
+          console.log(result);
+         this.$router.push({ name: 'Home'})
+    }).catch(e => {
+            console.log(e);
+        });
+       
+    }
+  }
 
 }
 </script>

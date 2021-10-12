@@ -38,7 +38,7 @@
                             <button type="button" v-on:click="eliminar(item.id)" class="btn btn-default btn-flat">
                                <i class="far fa-trash-alt"></i>
                             </button>
-                            <button type="button" class="btn btn-default btn-flat">
+                            <button type="button"  v-on:click="alquiler(item)" class="btn btn-default btn-flat">
                                   <i class="fas fa-truck-loading"></i>
                             </button>
                         </div>
@@ -54,6 +54,7 @@
                 </table></div></div></div>
               </div>
               <!-- /.card-body -->
+           
 </div>
     
 </template>
@@ -67,21 +68,40 @@ export default {
     }
   },
   created() {
-    axios.get("http://localhost:3000/articulos?").then((result) => {
-        this.items=result.data;
-      console.log(this.items);
-    })
+      this.cargar();
   },
    methods: {
     eliminar: function (id) {   
       console.log(id);
       axios.delete("http://localhost:3000/articulos/"+id).then((result) => {
+         this.$toast.open({
+           message:'Articulo Eliminado exitosamente',
+           type: 'error',
+           position: 'bottom-right',
+           duration: '4000' 
+         });
+        this.cargar();
          console.log(result);
     }).catch(e => {
             console.log(e);
         });
        
-    }
+    },
+    cargar: function () { 
+      axios.get("http://localhost:3000/articulos?").then((result) => {
+        this.items=result.data;
+      })
+    },
+    alquiler: function (item) {
+     //console.log(item);
+      this.$router.push({ name: 'Alquiler',
+          params: {
+                 "id": item.id,
+                  "nombre":item.nombre,
+                  "cantidad":item.cantidad
+                } 
+      })
+    },
   }
 };
 </script>

@@ -36,8 +36,11 @@
 import  Navbar from './components/Navbar'
 import {createApp} from 'vue';
 import VueToast from 'vue-toast-notification';
+import 'vue-toast-notification/dist/theme-sugar.css';
+import VModal from 'vue-js-modal'
 const app = createApp({});
-app.use(VueToast);
+app.use(VueToast,VModal);
+app.mount('#app');
 export default {
   
   name: 'App',
@@ -46,6 +49,10 @@ export default {
   },
   components:{
     Navbar
+  },
+  methods: {
+     
   }
+  
 }
 </script>
