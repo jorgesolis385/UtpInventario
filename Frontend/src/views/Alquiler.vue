@@ -50,7 +50,12 @@
             <!-- /.row -->
              <div class="row">
                 <div class="col-md-6">
-                    <button type="button" v-on:click="persistir(entity,articulo.id)" class="btn btn-block btn-primary">Crear Articulo</button>
+                  <template v-if="newEvento">
+                    <button type="button" v-on:click="persistir(entity,articulo.id)" class="btn btn-block btn-primary">Guardar Evento</button>
+                  </template>
+                  <template v-else>
+                      <button type="button" v-on:click="persistir(entity,articulo.id)" class="btn btn-block btn-primary">Editar Evento</button>
+                  </template> 
                 </div>
                 <div class="col-md-6">
                     <button type="button" class="btn btn-block btn-default">Limpiar</button>
@@ -70,11 +75,19 @@ export default {
 data() {
     return {
        entity:{},
-       articulo: this.$route.params
+       articulo: this.$route.params,
+       newEvent:true
     }
   },
   created() {
-    console.log( this.articulo);
+    
+    if(this.$route.params.fecha_inicio)
+    {
+      this.entity = this.$route.params;
+      this.newEvent = false;
+      console.log("Editar evento");
+    }
+      console.log(  this.newEvent);
     // articulo = this.$route.params.item;
   },
   methods: {
@@ -109,6 +122,38 @@ data() {
         });
        
     },
+    updateEvento: function (entity,id) {   
+      const headers = { 
+        "Authorization": "Bearer my-token",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials": true,
+         "Content-Type": "application/json"
+      }; 
+      console.log(entity.id);
+      axios.put("http://localhost:3000/eventos",{
+        "articulo_id":id,
+        "cantidad":Number(entity.cantidad),
+        "fecha_inicio": entity.fecha_inicio,
+        "fecha_fin": new Date(),
+        "quien_alquila":entity.quienal,
+        "quien_entrega":entity.quienen,
+        "tipo": entity.tipo
+      },{ headers }).then((result) => {
+           this.updateArticulo(entity.cantidad);
+           console.log(result);
+           this.$toast.open({
+           message:'Alquiler guargado exitosamente',
+           type: 'success',
+           position: 'top-right',
+           duration: '3000' 
+         });
+          console.log(result);
+         this.$router.push({ name: 'Home'})
+        }).catch(e => {
+            console.log(e);
+        });
+       
+    },
     updateArticulo: function (cantidad) { 
       const headers = { 
         "Authorization": "Bearer my-token",
@@ -116,8 +161,7 @@ data() {
         "Access-Control-Allow-Credentials": true,
          "Content-Type": "application/json"
       };  
-        console.log("---------------------------------");
-        console.log(this.articulo.cantidad - cantidad);
+       
          axios.put("http://localhost:3000/articulos/"+this.articulo.id,{
           "id": this.articulo.id,    
           "nombre": this.articulo.nombre,

@@ -34,9 +34,6 @@
                     <td>{{item.cantidad}}</td>
                     <td>
                         <div class="btn-group">
-                            <button type="button" class="btn btn-default btn-flat">
-                                <i class="far fa-edit"></i>
-                            </button>
                             <button type="button" v-on:click="eliminar(item.id)" class="btn btn-default btn-flat">
                                <i class="far fa-trash-alt"></i>
                             </button>
@@ -98,10 +95,15 @@ export default {
      //console.log(item);
       this.$router.push({ name: 'Alquiler',
           params: {
-                 "id": item.id,
-                  "nombre":item.nombre,
-                  "cantidad":item.cantidad
-                } 
+                   "id": item.id,
+                    "tipo": item.tipo,
+                    "fecha_inicio": item.fecha_inicio,
+                    "fecha_fin": item.fecha_fin,
+                    "articulo_id": item.articulo_id,
+                    "quienal": item.quien_alquila,
+                    "quienen": item.quien_entrega,
+                    "cantidad": item.cantidad
+                  } 
       })
     },
   }
