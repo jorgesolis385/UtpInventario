@@ -18,7 +18,7 @@
             <router-link to="/" class="nav-link">Inicio</router-link>
           </li>
           <li class="nav-item">     
-             <router-link to="/login" class="nav-link">Informacion</router-link>
+             <router-link to="/eventos" class="nav-link">Eventos</router-link>
           </li>
          
         </ul>

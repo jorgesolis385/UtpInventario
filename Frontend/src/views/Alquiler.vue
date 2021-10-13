@@ -94,8 +94,9 @@ data() {
         "quien_entrega":entity.quienen,
         "tipo": entity.tipo
       },{ headers }).then((result) => {
-                 
-         this.$toast.open({
+           this.updateArticulo(entity.cantidad);
+           console.log(result);
+           this.$toast.open({
            message:'Alquiler guargado exitosamente',
            type: 'success',
            position: 'top-right',
@@ -103,10 +104,31 @@ data() {
          });
           console.log(result);
          this.$router.push({ name: 'Home'})
-    }).catch(e => {
+        }).catch(e => {
             console.log(e);
         });
        
+    },
+    updateArticulo: function (cantidad) { 
+      const headers = { 
+        "Authorization": "Bearer my-token",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials": true,
+         "Content-Type": "application/json"
+      };  
+        console.log("---------------------------------");
+        console.log(this.articulo.cantidad - cantidad);
+         axios.put("http://localhost:3000/articulos/"+this.articulo.id,{
+          "id": this.articulo.id,    
+          "nombre": this.articulo.nombre,
+          "cantidad":Number(this.articulo.cantidad - cantidad),
+          "fecha_creacion": this.articulo.fecha_creacion,
+          "estado": this.articulo.estado
+      },{ headers }).then((result) => {
+          console.log(result);
+    }).catch(e => {
+            console.log(e);
+        });
     }
   }
 
