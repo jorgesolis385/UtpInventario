@@ -79,14 +79,15 @@ data() {
        newEvent:true
     }
   },
-  created() {
-    
+  beforeCreate(){
     if(this.$route.params.fecha_inicio)
     {
       this.entity = this.$route.params;
       this.newEvent = false;
       console.log("Editar evento");
     }
+  },
+  created() {
       console.log(  this.newEvent);
     // articulo = this.$route.params.item;
   },
